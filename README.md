@@ -1,4 +1,3 @@
-
 # Ride Share App
 
 This is a Ride Share Application backend built with **FastAPI**. It includes functionalities for passenger and driver registration, ride booking, real-time updates, and payment processing.
@@ -83,6 +82,80 @@ ride_share_app/
 - SQLite (default database)
 - Stripe Python SDK
 
-## License
+## Troubleshooting
 
-This project is licensed under the MIT License.
+If you encounter issues while setting up or running the application, refer to the following steps:
+
+### 1. **ModuleNotFoundError**
+
+- If you see an error like `ModuleNotFoundError: No module named 'passlib'`, install the missing module:
+  ```bash
+  pip install "passlib[bcrypt]"
+  ```
+- For `jose` library issues, install:
+  ```bash
+  pip install python-jose
+  ```
+- For `stripe` module issues, install:
+  ```bash
+  pip install stripe
+  ```
+
+### 2. **Root Endpoint (`/`) Not Found**
+
+If visiting `http://127.0.0.1:8000/` gives a `404 Not Found` error, add a root route in `main.py`:
+```python
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Ride Share App!"}
+```
+
+### 3. **Browser Favicon Warnings**
+
+Browsers often request a `favicon.ico`, leading to warnings. Add a placeholder route:
+```python
+@app.get("/favicon.ico")
+def favicon():
+    return {"message": "Favicon not available"}
+```
+
+### 4. **Port Issues**
+
+If the default port (`8000`) is in use, specify a different port:
+```bash
+uvicorn main:app --host 127.0.0.1 --port 8080 --reload
+```
+
+### 5. **Database Troubleshooting**
+
+If the SQLite database is not being created or updated:
+- Check the database file (`ride_share_app.db`) in the project directory.
+- Use `sqlite3` to inspect the database:
+  ```bash
+  sqlite3 ride_share_app.db
+  .tables
+  SELECT * FROM users;
+  ```
+
+### 6. **General Dependency Issues**
+
+Ensure all dependencies are installed:
+```bash
+pip install -r requirements.txt
+```
+
+If new dependencies are added, update `requirements.txt`:
+```bash
+pip freeze > requirements.txt
+```
+
+### 7. **Debugging Tips**
+
+- Always check error logs in the terminal for details.
+- Clear your browser cache if changes don't reflect immediately.
+- Restart the application after making code changes:
+  ```bash
+  uvicorn main:app --reload
+  ```
+
+If you encounter further issues, share the specific error logs for assistance.
