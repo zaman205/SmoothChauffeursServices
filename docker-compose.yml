@@ -1,0 +1,13 @@
+
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: ride_share_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=sqlite:///./ride_share.db
